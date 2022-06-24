@@ -16,8 +16,8 @@
 import rclpy
 from rclpy.node import Node
 
-from visualization_msgs.msg import Marker
 from soccer_vision_3d_msgs.msg import BallArray, FieldBoundary, GoalpostArray, RobotArray
+from visualization_msgs.msg import Marker
 
 
 class SoccerVision3DMarkers(Node):
