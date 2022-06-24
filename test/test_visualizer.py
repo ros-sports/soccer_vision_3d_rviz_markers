@@ -26,7 +26,6 @@ class TestVisualizer:
     received = None
 
     def _callback_msg(self, msg):
-        print("callback!")
         self.received = msg
 
     def test_topics(self):
