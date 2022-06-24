@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from soccer_vision_attribute_msgs.msg import Confidence
 from soccer_vision_3d_msgs.msg import Ball
-from soccer_vision_3d_rviz_markers.conversion import conf_to_alpha, ball_to_marker
+from soccer_vision_3d_rviz_markers.conversion import ball_to_marker, conf_to_alpha
+from soccer_vision_attribute_msgs.msg import Confidence
 from visualization_msgs.msg import Marker
 
 

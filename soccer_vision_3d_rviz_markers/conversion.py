@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from soccer_vision_attribute_msgs.msg import Confidence
 from soccer_vision_3d_msgs.msg import Ball
+from soccer_vision_attribute_msgs.msg import Confidence
 from std_msgs.msg import ColorRGBA
 from visualization_msgs.msg import Marker
 
