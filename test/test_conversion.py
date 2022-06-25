@@ -14,10 +14,12 @@
 
 from geometry_msgs.msg import Point, Vector3
 from soccer_vision_3d_msgs.msg import (
-    Ball, FieldBoundary, Goalpost, MarkingEllipse, MarkingIntersection, MarkingSegment)
+    Ball, FieldBoundary, Goalpost, MarkingEllipse, MarkingIntersection, MarkingSegment, Obstacle,
+    Robot)
 from soccer_vision_3d_rviz_markers.conversion import (
     ball_to_marker, conf_to_alpha, field_boundary_to_marker, goalpost_to_marker,
-    marking_ellipse_to_marker, marking_intersection_to_marker, marking_segment_to_marker)
+    marking_ellipse_to_marker, marking_intersection_to_marker, marking_segment_to_marker,
+    obstacle_to_marker, robot_to_markers)
 from soccer_vision_attribute_msgs.msg import Confidence
 from visualization_msgs.msg import Marker
 
@@ -56,7 +58,8 @@ def test_ball_to_marker():
 
 def test_fieldboundary_to_marker():
     field_boundary = FieldBoundary()
-    field_boundary.points = [Point(x=0.1, y=0.2, z=0.3), Point(x=0.4, y=0.5, z=0.6)]
+    field_boundary.points = [
+        Point(x=0.1, y=0.2, z=0.3), Point(x=0.4, y=0.5, z=0.6)]
     field_boundary.confidence.confidence = 0.6
     marker = field_boundary_to_marker(field_boundary)
 
@@ -151,8 +154,10 @@ def test_marking_intersection_to_marker():
     assert marker.pose.position.x == 0.1
     assert marker.pose.position.y == 0.2
     assert marker.pose.position.z == 0.3
-    assert Point(x=0.1) in marker.points  # 0.1m length vector in direction of 1st ray
-    assert Point(y=0.1) in marker.points  # 0.1m length vector in direction of 2nd ray
+    # 0.1m length vector in direction of 1st ray
+    assert Point(x=0.1) in marker.points
+    # 0.1m length vector in direction of 2nd ray
+    assert Point(y=0.1) in marker.points
     assert marker.points.count(Point()) == 2  # center
     assert marker.scale.x == 0.01  # 0.01m line width
     assert marker.color.r == 1.0
@@ -172,7 +177,7 @@ def test_marking_segment_to_marker():
     marking_segment.confidence.confidence = 0.7
     marker = marking_segment_to_marker(marking_segment)
 
-    assert marker.type == marker.LINE_STRIP
+    assert marker.type == Marker.LINE_STRIP
     assert marker.points[0].x == 0.1
     assert marker.points[0].y == 0.2
     assert marker.points[0].z == 0.3
@@ -184,3 +189,102 @@ def test_marking_segment_to_marker():
     assert marker.color.g == 1.0
     assert marker.color.b == 1.0
     assert marker.color.a == 0.7
+
+
+def test_obstacle_to_marker():
+    obstacle = Obstacle()
+    obstacle.bb.center.position.x = 0.1
+    obstacle.bb.center.position.y = 0.2
+    obstacle.bb.center.position.z = 0.3
+    obstacle.bb.center.orientation.x = 0.128
+    obstacle.bb.center.orientation.y = 0.145
+    obstacle.bb.center.orientation.z = 0.269
+    obstacle.bb.center.orientation.w = 0.944
+    obstacle.bb.size.x = 0.4
+    obstacle.bb.size.y = 0.5
+    obstacle.bb.size.z = 0.6
+    obstacle.confidence.confidence = 0.7
+
+    marker = obstacle_to_marker(obstacle)
+    assert marker.type == Marker.CUBE
+    assert marker.pose.position.x == 0.1
+    assert marker.pose.position.y == 0.2
+    assert marker.pose.position.z == 0.3
+    assert marker.pose.orientation.x == 0.128
+    assert marker.pose.orientation.y == 0.145
+    assert marker.pose.orientation.z == 0.269
+    assert marker.pose.orientation.w == 0.944
+    assert marker.scale.x == 0.4
+    assert marker.scale.y == 0.5
+    assert marker.scale.z == 0.6
+    assert marker.color.r == 1.0
+    assert marker.color.g == 1.0
+    assert marker.color.b == 1.0
+    assert marker.color.a == 0.7
+
+
+def test_robot_to_markers():
+    robot = Robot()
+    robot.bb.center.position.x = 0.1
+    robot.bb.center.position.y = 0.2
+    robot.bb.center.position.z = 0.3
+    robot.bb.center.orientation.x = 0.128
+    robot.bb.center.orientation.y = 0.145
+    robot.bb.center.orientation.z = 0.269
+    robot.bb.center.orientation.w = 0.944
+    robot.bb.size.x = 0.4
+    robot.bb.size.y = 0.5
+    robot.bb.size.z = 0.6
+    robot.confidence.confidence = 0.7
+    robot.attributes.player_number = 1
+    robot.attributes.team = robot.attributes.TEAM_OPPONENT
+    robot.attributes.state = robot.attributes.STATE_KICKING
+    robot.attributes.facing = robot.attributes.FACING_LEFT
+    markers = robot_to_markers(robot)
+
+    assert len(markers) == 2
+
+    assert markers[0].type == Marker.CUBE
+    assert markers[0].pose.position.x == 0.1
+    assert markers[0].pose.position.y == 0.2
+    assert markers[0].pose.position.z == 0.3
+    assert markers[0].pose.orientation.x == 0.128
+    assert markers[0].pose.orientation.y == 0.145
+    assert markers[0].pose.orientation.z == 0.269
+    assert markers[0].pose.orientation.w == 0.944
+    assert markers[0].scale.x == 0.4
+    assert markers[0].scale.y == 0.5
+    assert markers[0].scale.z == 0.6
+    assert markers[0].color.r == 1.0
+    assert markers[0].color.g == 0.0
+    assert markers[0].color.b == 0.0
+    assert markers[0].color.a == 0.7
+
+    assert markers[1].type == Marker.TEXT_VIEW_FACING
+    assert markers[1].pose.position.x == 0.1
+    assert markers[1].pose.position.y == 0.2
+    assert markers[1].pose.position.z == 0.3 + 0.3 + 0.1  # center.z + scale.z/2 + 0.1m text offset
+    assert markers[1].pose.orientation.x == 0.128
+    assert markers[1].pose.orientation.y == 0.145
+    assert markers[1].pose.orientation.z == 0.269
+    assert markers[1].pose.orientation.w == 0.944
+    assert markers[1].color.r == 1.0
+    assert markers[1].color.g == 0.0
+    assert markers[1].color.b == 0.0
+    assert markers[1].color.a == 0.7
+
+
+def test_own_team_robot_to_markers():
+    robot = Robot()
+    robot.attributes.team = robot.attributes.TEAM_OWN
+    markers = robot_to_markers(robot)
+
+    assert len(markers) == 2
+
+    assert markers[0].color.r == 0.0
+    assert markers[0].color.g == 1.0
+    assert markers[0].color.b == 0.0
+
+    assert markers[1].color.r == 0.0
+    assert markers[1].color.g == 1.0
+    assert markers[1].color.b == 0.0

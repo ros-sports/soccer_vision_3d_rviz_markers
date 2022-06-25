@@ -20,7 +20,8 @@ from soccer_vision_3d_msgs.msg import (
     BallArray, FieldBoundary, GoalpostArray, MarkingArray, ObstacleArray, RobotArray)
 from soccer_vision_3d_rviz_markers.conversion import (
     ball_to_marker, field_boundary_to_marker, goalpost_to_marker, marking_ellipse_to_marker,
-    marking_intersection_to_marker, marking_segment_to_marker, obstacle_to_marker, robot_to_marker)
+    marking_intersection_to_marker, marking_segment_to_marker, obstacle_to_marker,
+    robot_to_markers)
 from visualization_msgs.msg import Marker, MarkerArray
 
 
@@ -94,7 +95,7 @@ class SoccerVision3DMarkers(Node):
     def robots_cb(self, msg: RobotArray):
         robots_array = MarkerArray()
         for robot in msg.robots:
-            robots_array.markers.append(robot_to_marker(robot))
+            robots_array.markers.extend(robot_to_markers(robot))
         self.robots_publisher.publish(robots_array)
 
 

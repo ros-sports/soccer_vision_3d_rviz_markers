@@ -305,6 +305,6 @@ class TestVisualizer:
         rclpy.spin_once(test_node, timeout_sec=0.1)
 
         assert self.received is not None
-        assert len(self.received.markers) == 2
+        assert len(self.received.markers) >= 2  # >= because a robot can have more than one Marker
 
         rclpy.shutdown()

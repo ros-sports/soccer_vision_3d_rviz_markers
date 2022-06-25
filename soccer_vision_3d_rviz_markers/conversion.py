@@ -87,9 +87,40 @@ def marking_segment_to_marker(msg: MarkingSegment) -> Marker:
 
 def obstacle_to_marker(msg: Obstacle) -> Marker:
     marker = Marker()
+    marker.type = Marker.CUBE
+    marker.pose = msg.bb.center
+    marker.scale = msg.bb.size
+    marker.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
 
-def robot_to_marker(msg: Robot) -> Marker:
+def robot_to_markers(msg: Robot) -> list[Marker]:
+    markers = []
+
+    color = ColorRGBA(r=0.0, g=0.0, b=0.0, a=conf_to_alpha(msg.confidence))
+    if msg.attributes.team is msg.attributes.TEAM_OWN:
+        color.g = 1.0
+    elif msg.attributes.team is msg.attributes.TEAM_OPPONENT:
+        color.r = 1.0
+    else:
+        color.r = 1.0
+        color.g = 1.0
+        color.b = 1.0
+
     marker = Marker()
-    return marker
+    marker.type = Marker.CUBE
+    marker.pose = msg.bb.center
+    marker.scale = msg.bb.size
+    marker.color = color
+    markers.append(marker)
+
+    marker_text = Marker()
+    marker_text.type = Marker.TEXT_VIEW_FACING
+    marker_text.pose.position.x = msg.bb.center.position.x
+    marker_text.pose.position.y = msg.bb.center.position.y
+    marker_text.pose.position.z = msg.bb.center.position.z + msg.bb.size.z / 2 + 0.1
+    marker_text.pose.orientation = msg.bb.center.orientation
+    marker_text.color = color
+    markers.append(marker_text)
+
+    return markers
