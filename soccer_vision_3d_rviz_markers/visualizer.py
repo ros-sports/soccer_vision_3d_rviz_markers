@@ -19,7 +19,8 @@ from rclpy.node import Node
 from soccer_vision_3d_msgs.msg import (
     BallArray, FieldBoundary, GoalpostArray, MarkingArray, ObstacleArray, RobotArray)
 from soccer_vision_3d_rviz_markers.conversion import (
-    ball_to_marker, field_boundary_to_marker, goalpost_to_marker)
+    ball_to_marker, field_boundary_to_marker, goalpost_to_marker, marking_ellipse_to_marker,
+    marking_intersection_to_marker, marking_segment_to_marker, obstacle_to_marker, robot_to_marker)
 from visualization_msgs.msg import Marker, MarkerArray
 
 
@@ -75,13 +76,26 @@ class SoccerVision3DMarkers(Node):
         self.goalposts_publisher.publish(marker_array)
 
     def markings_cb(self, msg: MarkingArray):
-        pass
+        marker_array = MarkerArray()
+        for marking in msg.ellipses:
+            marker_array.markers.append(marking_ellipse_to_marker(marking))
+        for marking in msg.intersections:
+            marker_array.markers.append(marking_intersection_to_marker(marking))
+        for marking in msg.segments:
+            marker_array.markers.append(marking_segment_to_marker(marking))
+        self.markings_publisher.publish(marker_array)
 
     def obstacles_cb(self, msg: ObstacleArray):
-        pass
+        obstacles_array = MarkerArray()
+        for obstacle in msg.obstacles:
+            obstacles_array.markers.append(obstacle_to_marker(obstacle))
+        self.obstacles_publisher.publish(obstacles_array)
 
     def robots_cb(self, msg: RobotArray):
-        pass
+        robots_array = MarkerArray()
+        for robot in msg.robots:
+            robots_array.markers.append(robot_to_marker(robot))
+        self.robots_publisher.publish(robots_array)
 
 
 def main(args=None):
