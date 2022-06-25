@@ -18,7 +18,8 @@ from rclpy.node import Node
 
 from soccer_vision_3d_msgs.msg import (
     BallArray, FieldBoundary, GoalpostArray, MarkingArray, ObstacleArray, RobotArray)
-from soccer_vision_3d_rviz_markers.conversion import ball_to_marker, goalpost_to_marker
+from soccer_vision_3d_rviz_markers.conversion import (
+    ball_to_marker, field_boundary_to_marker, goalpost_to_marker)
 from visualization_msgs.msg import Marker, MarkerArray
 
 
@@ -64,7 +65,8 @@ class SoccerVision3DMarkers(Node):
         self.balls_publisher.publish(marker_array)
 
     def field_boundary_cb(self, msg: FieldBoundary):
-        pass
+        marker = field_boundary_to_marker(msg)
+        self.field_boundary_publisher.publish(marker)
 
     def goalposts_cb(self, msg: GoalpostArray):
         marker_array = MarkerArray()

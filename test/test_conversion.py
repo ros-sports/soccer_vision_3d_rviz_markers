@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from soccer_vision_3d_msgs.msg import Ball, Goalpost
+from geometry_msgs.msg import Point
+from soccer_vision_3d_msgs.msg import Ball, FieldBoundary, Goalpost
 from soccer_vision_3d_rviz_markers.conversion import (
-    ball_to_marker, conf_to_alpha, goalpost_to_marker)
+    ball_to_marker, conf_to_alpha, field_boundary_to_marker, goalpost_to_marker)
 from soccer_vision_attribute_msgs.msg import Confidence
 from visualization_msgs.msg import Marker
 
@@ -50,6 +51,27 @@ def test_ball_to_marker():
     assert marker.color.g == 0.0
     assert marker.color.b == 0.0
     assert marker.color.a == 0.5
+
+
+def test_fieldboundary_to_marker():
+    field_boundary = FieldBoundary()
+    field_boundary.points = [Point(x=0.1, y=0.2, z=0.3), Point(x=0.4, y=0.5, z=0.6)]
+    field_boundary.confidence.confidence = 0.6
+    marker = field_boundary_to_marker(field_boundary)
+
+    assert marker.type == Marker.LINE_STRIP
+    assert marker.action == Marker.MODIFY
+    assert marker.points[0].x == 0.1
+    assert marker.points[0].y == 0.2
+    assert marker.points[0].z == 0.3
+    assert marker.points[1].x == 0.4
+    assert marker.points[1].y == 0.5
+    assert marker.points[1].z == 0.6
+    assert marker.scale.x == 0.02
+    assert marker.color.r == 0.0
+    assert marker.color.g == 1.0
+    assert marker.color.b == 0.0
+    assert marker.color.a == 0.6
 
 
 def test_goalpost_to_marker():

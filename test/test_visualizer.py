@@ -14,9 +14,9 @@
 
 import rclpy
 
-from soccer_vision_3d_msgs.msg import Ball, BallArray, Goalpost, GoalpostArray
+from soccer_vision_3d_msgs.msg import Ball, BallArray, FieldBoundary, Goalpost, GoalpostArray
 from soccer_vision_3d_rviz_markers.visualizer import SoccerVision3DMarkers
-from visualization_msgs.msg import MarkerArray
+from visualization_msgs.msg import Marker, MarkerArray
 
 
 class TestVisualizer:
@@ -114,6 +114,25 @@ class TestVisualizer:
 
         assert self.received is not None
         assert len(self.received.markers) == 2
+
+        rclpy.shutdown()
+
+    def test_field_boundary(self):
+
+        rclpy.init()
+        visualizer_node = SoccerVision3DMarkers()
+        test_node = rclpy.node.Node('test')
+        publisher = test_node.create_publisher(
+            FieldBoundary, 'soccer_vision_3d/field_boundary', 10)
+        subscription = test_node.create_subscription(  # noqa: F841
+            Marker, 'visualization/field_boundary', self._callback_msg, 10)
+
+        publisher.publish(FieldBoundary())
+
+        rclpy.spin_once(visualizer_node, timeout_sec=0.1)
+        rclpy.spin_once(test_node, timeout_sec=0.1)
+
+        assert self.received is not None
 
         rclpy.shutdown()
 

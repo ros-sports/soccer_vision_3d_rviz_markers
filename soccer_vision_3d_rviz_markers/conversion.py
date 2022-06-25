@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from soccer_vision_3d_msgs.msg import Ball, Goalpost
+from soccer_vision_3d_msgs.msg import Ball, FieldBoundary, Goalpost
 from soccer_vision_attribute_msgs.msg import Confidence
 from std_msgs.msg import ColorRGBA
 from visualization_msgs.msg import Marker
@@ -29,6 +29,15 @@ def ball_to_marker(msg: Ball) -> Marker:
     marker.type = Marker.SPHERE
     marker.pose.position = msg.center
     marker.color = ColorRGBA(r=1.0, a=conf_to_alpha(msg.confidence))
+    return marker
+
+
+def field_boundary_to_marker(msg: FieldBoundary) -> Marker:
+    marker = Marker()
+    marker.type = Marker.LINE_STRIP
+    marker.points = msg.points
+    marker.scale.x = 0.02
+    marker.color = ColorRGBA(g=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
 
