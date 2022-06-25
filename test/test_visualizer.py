@@ -14,8 +14,10 @@
 
 import rclpy
 
+from geometry_msgs.msg import Point
 from soccer_vision_3d_msgs.msg import Ball, BallArray
 from soccer_vision_3d_rviz_markers.visualizer import SoccerVision3DMarkers
+from soccer_vision_3d_rviz_markers.conversion import ball_to_marker
 from visualization_msgs.msg import MarkerArray
 
 
@@ -115,5 +117,27 @@ class TestVisualizer:
 
         assert self.received is not None
         assert len(self.received.markers) == 2
+
+        rclpy.shutdown()
+
+    def test_ball_converted(self):
+
+        rclpy.init()
+        visualizer_node = SoccerVision3DMarkers()
+        test_node = rclpy.node.Node('test')
+        publisher = test_node.create_publisher(
+            BallArray, 'soccer_vision_3d/balls', 10)
+        subscription = test_node.create_subscription(  # noqa: F841
+            MarkerArray, 'visualization/balls', self._callback_msg, 10)
+
+        ball = Ball(center=Point(x=0.1))
+        publisher.publish(BallArray(balls=[ball]))
+
+        rclpy.spin_once(visualizer_node, timeout_sec=0.1)
+        rclpy.spin_once(test_node, timeout_sec=0.1)
+
+        assert self.received is not None
+        assert len(self.received.markers) == 1
+        assert self.received.markers[0] == ball_to_marker(ball)
 
         rclpy.shutdown()
