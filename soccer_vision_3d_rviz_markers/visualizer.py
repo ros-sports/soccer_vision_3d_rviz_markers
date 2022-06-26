@@ -30,7 +30,7 @@ class SoccerVision3DMarkers(Node):
     def __init__(self):
         super().__init__('SoccerVision3DMarkers')
 
-        # Create publisher
+        # Create publishers
         self.balls_publisher = self.create_publisher(
             MarkerArray, 'visualization/balls', 10)
         self.field_boundary_publisher = self.create_publisher(
