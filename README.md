@@ -20,14 +20,15 @@ colcon build
 
 # Usage
 
+In this example, we will visualize a manually published goalpost in RViz2.
+
+First, run the visualizer node:
+
 ```sh
 ros2 run soccer_vision_3d_rviz_markers visualizer
 ```
 
-
-```sh
-rviz2
-```
+Set up a publisher that publishes a goalpost:
 
 ```sh
 ros2 topic pub /soccer_vision_3d/goalposts soccer_vision_3d_msgs/msg/GoalpostArray "
@@ -57,7 +58,11 @@ posts:
 "
 ```
 
-```sh
-```
+
+Open RViz2:
 
 ```sh
+rviz2
+```
+
+Add a MarkerArray, and set the topic to ``/soccer_vision_3d/goalposts``.
