@@ -18,10 +18,10 @@ from rclpy.node import Node
 
 from soccer_vision_3d_msgs.msg import (
     BallArray, FieldBoundary, GoalpostArray, MarkingArray, ObstacleArray, RobotArray)
-from soccer_vision_3d_rviz_markers.conversion import (
-    ball_to_marker, field_boundary_to_marker, goalpost_to_marker, marking_ellipse_to_marker,
-    marking_intersection_to_marker, marking_segment_to_marker, obstacle_to_marker,
-    robot_to_markers)
+from soccer_vision_3d_rviz_markers.conversion import field_boundary_to_marker
+from soccer_vision_3d_rviz_markers.conversion_with_header import (
+    ball_array_to_marker_array, goalpost_array_to_marker_array,
+    marking_array_to_marker_array, obstacle_array_to_marker_array, robot_array_to_marker_array)
 from visualization_msgs.msg import Marker, MarkerArray
 
 
@@ -61,42 +61,22 @@ class SoccerVision3DMarkers(Node):
             RobotArray, 'soccer_vision_3d/robots', self.robots_cb, 10)
 
     def balls_cb(self, msg: BallArray):
-        marker_array = MarkerArray()
-        for ball in msg.balls:
-            marker_array.markers.append(ball_to_marker(ball))
-        self.balls_publisher.publish(marker_array)
+        self.balls_publisher.publish(ball_array_to_marker_array(msg))
 
     def field_boundary_cb(self, msg: FieldBoundary):
-        marker = field_boundary_to_marker(msg)
-        self.field_boundary_publisher.publish(marker)
+        self.field_boundary_publisher.publish(field_boundary_to_marker(msg))
 
     def goalposts_cb(self, msg: GoalpostArray):
-        marker_array = MarkerArray()
-        for goalpost in msg.posts:
-            marker_array.markers.append(goalpost_to_marker(goalpost))
-        self.goalposts_publisher.publish(marker_array)
+        self.goalposts_publisher.publish(goalpost_array_to_marker_array(msg))
 
     def markings_cb(self, msg: MarkingArray):
-        marker_array = MarkerArray()
-        for marking in msg.ellipses:
-            marker_array.markers.append(marking_ellipse_to_marker(marking))
-        for marking in msg.intersections:
-            marker_array.markers.append(marking_intersection_to_marker(marking))
-        for marking in msg.segments:
-            marker_array.markers.append(marking_segment_to_marker(marking))
-        self.markings_publisher.publish(marker_array)
+        self.markings_publisher.publish(marking_array_to_marker_array(msg))
 
     def obstacles_cb(self, msg: ObstacleArray):
-        obstacles_array = MarkerArray()
-        for obstacle in msg.obstacles:
-            obstacles_array.markers.append(obstacle_to_marker(obstacle))
-        self.obstacles_publisher.publish(obstacles_array)
+        self.obstacles_publisher.publish(obstacle_array_to_marker_array(msg))
 
     def robots_cb(self, msg: RobotArray):
-        robots_array = MarkerArray()
-        for robot in msg.robots:
-            robots_array.markers.extend(robot_to_markers(robot))
-        self.robots_publisher.publish(robots_array)
+        self.robots_publisher.publish(robot_array_to_marker_array(msg))
 
 
 def main(args=None):

@@ -15,8 +15,7 @@
 import rclpy
 
 from soccer_vision_3d_msgs.msg import (
-    Ball, BallArray, FieldBoundary, Goalpost, GoalpostArray, MarkingArray, MarkingEllipse,
-    MarkingIntersection, MarkingSegment, Obstacle, ObstacleArray, Robot, RobotArray)
+    BallArray, FieldBoundary, GoalpostArray, MarkingArray, ObstacleArray, Robot, RobotArray)
 from soccer_vision_3d_rviz_markers.visualizer import SoccerVision3DMarkers
 from visualization_msgs.msg import Marker, MarkerArray
 
@@ -79,7 +78,7 @@ class TestVisualizer:
 
         rclpy.shutdown()
 
-    def test_zero_balls(self):
+    def test_balls(self):
 
         rclpy.init()
         visualizer_node = SoccerVision3DMarkers()
@@ -95,27 +94,6 @@ class TestVisualizer:
         rclpy.spin_once(test_node, timeout_sec=0.1)
 
         assert self.received is not None
-        assert self.received.markers == []
-
-        rclpy.shutdown()
-
-    def test_multiple_balls(self):
-
-        rclpy.init()
-        visualizer_node = SoccerVision3DMarkers()
-        test_node = rclpy.node.Node('test')
-        publisher = test_node.create_publisher(
-            BallArray, 'soccer_vision_3d/balls', 10)
-        subscription = test_node.create_subscription(  # noqa: F841
-            MarkerArray, 'visualization/balls', self._callback_msg, 10)
-
-        publisher.publish(BallArray(balls=[Ball(), Ball()]))
-
-        rclpy.spin_once(visualizer_node, timeout_sec=0.1)
-        rclpy.spin_once(test_node, timeout_sec=0.1)
-
-        assert self.received is not None
-        assert len(self.received.markers) == 2
 
         rclpy.shutdown()
 
@@ -138,7 +116,7 @@ class TestVisualizer:
 
         rclpy.shutdown()
 
-    def test_zero_goalposts(self):
+    def test_goalposts(self):
 
         rclpy.init()
         visualizer_node = SoccerVision3DMarkers()
@@ -154,33 +132,10 @@ class TestVisualizer:
         rclpy.spin_once(test_node, timeout_sec=0.1)
 
         assert self.received is not None
-        assert self.received.markers == []
 
         rclpy.shutdown()
 
-    def test_multiple_goalposts(self):
-
-        rclpy.init()
-        visualizer_node = SoccerVision3DMarkers()
-        test_node = rclpy.node.Node('test')
-        publisher = test_node.create_publisher(
-            GoalpostArray, 'soccer_vision_3d/goalposts', 10)
-        subscription = test_node.create_subscription(  # noqa: F841
-            MarkerArray, 'visualization/goalposts', self._callback_msg, 10)
-
-        publisher.publish(GoalpostArray(posts=[Goalpost(), Goalpost()]))
-
-        rclpy.spin_once(visualizer_node, timeout_sec=0.1)
-        rclpy.spin_once(test_node, timeout_sec=0.1)
-
-        assert self.received is not None
-        assert len(self.received.markers) == 2
-
-        rclpy.shutdown()
-
-    # Repeat test_no_balls for markings
-
-    def test_zero_markings(self):
+    def test_markings(self):
 
         rclpy.init()
         visualizer_node = SoccerVision3DMarkers()
@@ -196,37 +151,10 @@ class TestVisualizer:
         rclpy.spin_once(test_node, timeout_sec=0.1)
 
         assert self.received is not None
-        assert self.received.markers == []
 
         rclpy.shutdown()
 
-    # Repeat test_multiple_balls for marking
-    def test_multiple_markings(self):
-
-        rclpy.init()
-        visualizer_node = SoccerVision3DMarkers()
-        test_node = rclpy.node.Node('test')
-        publisher = test_node.create_publisher(
-            MarkingArray, 'soccer_vision_3d/markings', 10)
-        subscription = test_node.create_subscription(  # noqa: F841
-            MarkerArray, 'visualization/markings', self._callback_msg, 10)
-
-        publisher.publish(MarkingArray(
-            segments=[MarkingSegment(), MarkingSegment()],
-            intersections=[MarkingIntersection(), MarkingIntersection()],
-            ellipses=[MarkingEllipse(), MarkingEllipse()]))
-
-        rclpy.spin_once(visualizer_node, timeout_sec=0.1)
-        rclpy.spin_once(test_node, timeout_sec=0.1)
-
-        assert self.received is not None
-        assert len(self.received.markers) == 6
-
-        rclpy.shutdown()
-
-    # Repeat test_no_balls for obstacles
-
-    def test_zero_obstacles(self):
+    def test_obstacles(self):
 
         rclpy.init()
         visualizer_node = SoccerVision3DMarkers()
@@ -242,54 +170,10 @@ class TestVisualizer:
         rclpy.spin_once(test_node, timeout_sec=0.1)
 
         assert self.received is not None
-        assert self.received.markers == []
 
         rclpy.shutdown()
 
-    # Repeat test_multiple_balls for obstacles
-    def test_multiple_obstacles(self):
-
-        rclpy.init()
-        visualizer_node = SoccerVision3DMarkers()
-        test_node = rclpy.node.Node('test')
-        publisher = test_node.create_publisher(
-            ObstacleArray, 'soccer_vision_3d/obstacles', 10)
-        subscription = test_node.create_subscription(  # noqa: F841
-            MarkerArray, 'visualization/obstacles', self._callback_msg, 10)
-
-        publisher.publish(ObstacleArray(obstacles=[Obstacle(), Obstacle()]))
-
-        rclpy.spin_once(visualizer_node, timeout_sec=0.1)
-        rclpy.spin_once(test_node, timeout_sec=0.1)
-
-        assert self.received is not None
-        assert len(self.received.markers) == 2
-
-        rclpy.shutdown()
-
-    # Repeat test_no_balls for robots
-    def test_zero_robots(self):
-
-        rclpy.init()
-        visualizer_node = SoccerVision3DMarkers()
-        test_node = rclpy.node.Node('test')
-        publisher = test_node.create_publisher(
-            RobotArray, 'soccer_vision_3d/robots', 10)
-        subscription = test_node.create_subscription(  # noqa: F841
-            MarkerArray, 'visualization/robots', self._callback_msg, 10)
-
-        publisher.publish(RobotArray())
-
-        rclpy.spin_once(visualizer_node, timeout_sec=0.1)
-        rclpy.spin_once(test_node, timeout_sec=0.1)
-
-        assert self.received is not None
-        assert self.received.markers == []
-
-        rclpy.shutdown()
-
-    # Repeat test_multiple_balls for obstacles
-    def test_multiple_robots(self):
+    def test_robots(self):
 
         rclpy.init()
         visualizer_node = SoccerVision3DMarkers()
@@ -305,6 +189,5 @@ class TestVisualizer:
         rclpy.spin_once(test_node, timeout_sec=0.1)
 
         assert self.received is not None
-        assert len(self.received.markers) >= 2  # >= because a robot can have more than one Marker
 
         rclpy.shutdown()

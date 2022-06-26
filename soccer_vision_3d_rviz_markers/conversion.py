@@ -37,6 +37,8 @@ def ball_to_marker(msg: Ball) -> Marker:
 
 def field_boundary_to_marker(msg: FieldBoundary) -> Marker:
     marker = Marker()
+    # FieldBoundary has a header field because it's not part of an array. So, copy the header.
+    marker.header = msg.header
     marker.type = Marker.LINE_STRIP
     marker.points = msg.points
     marker.scale.x = 0.02
@@ -49,7 +51,8 @@ def goalpost_to_marker(msg: Goalpost) -> Marker:
     marker.type = Marker.CYLINDER
     marker.pose = msg.bb.center
     marker.scale = msg.bb.size
-    marker.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
+    marker.color = ColorRGBA(
+        r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
 
@@ -81,7 +84,8 @@ def marking_segment_to_marker(msg: MarkingSegment) -> Marker:
     marker.type = Marker.LINE_STRIP
     marker.points = [msg.start, msg.end]
     marker.scale.x = 0.05
-    marker.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
+    marker.color = ColorRGBA(
+        r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
 
@@ -90,7 +94,8 @@ def obstacle_to_marker(msg: Obstacle) -> Marker:
     marker.type = Marker.CUBE
     marker.pose = msg.bb.center
     marker.scale = msg.bb.size
-    marker.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
+    marker.color = ColorRGBA(
+        r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
 

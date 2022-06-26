@@ -16,3 +16,48 @@ To build from source, source your ROS installation, then run the following in yo
 git clone https://github.com/ros-sports/soccer_vision_3d_rviz_markers.git src/soccer_vision_3d_rviz_markers --branch ${ROS_DISTRO}
 colcon build
 ```
+
+
+# Usage
+
+```sh
+ros2 run soccer_vision_3d_rviz_markers visualizer
+```
+
+
+```sh
+rviz2
+```
+
+```sh
+ros2 topic pub /soccer_vision_3d/goalposts soccer_vision_3d_msgs/msg/GoalpostArray "
+header:
+  frame_id: 'map'
+posts:
+  - bb:
+      center:
+        position:
+          x: 2.0
+          y: 0.0
+          z: 0.2
+        orientation:
+          x: 0.0
+          y: 0.0
+          z: 0.0
+          w: 1.0
+      size:
+        x: 0.05
+        y: 0.05
+        z: 0.4
+    attributes:
+      side: 0
+      team: 0
+    confidence:
+      confidence: -1.0
+"
+```
+
+```sh
+```
+
+```sh
