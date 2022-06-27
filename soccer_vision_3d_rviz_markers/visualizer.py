@@ -35,8 +35,6 @@ class SoccerVision3DMarkers(Node):
             MarkerArray, 'visualization/balls', 10)
         self.field_boundary_publisher = self.create_publisher(
             Marker, 'visualization/field_boundary', 10)
-        self.goalpost_publisher = self.create_publisher(
-            MarkerArray, 'visualization/goalposts', 10)
         self.goalposts_publisher = self.create_publisher(
             MarkerArray, 'visualization/goalposts', 10)
         self.markings_publisher = self.create_publisher(
