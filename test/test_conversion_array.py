@@ -14,45 +14,42 @@
 
 from builtin_interfaces.msg import Time
 from soccer_vision_3d_msgs.msg import (
-    Ball, BallArray, FieldBoundary, Goalpost, GoalpostArray, MarkingArray, MarkingEllipse,
+    Ball, BallArray, Goalpost, GoalpostArray, MarkingArray, MarkingEllipse,
     MarkingIntersection, MarkingSegment, Obstacle, ObstacleArray, Robot, RobotArray)
-from soccer_vision_3d_rviz_markers.conversion import field_boundary_to_marker
-from soccer_vision_3d_rviz_markers.conversion_with_header import (
+from soccer_vision_3d_rviz_markers.conversion_array import (
     ball_array_to_marker_array, goalpost_array_to_marker_array, marking_array_to_marker_array,
     obstacle_array_to_marker_array, robot_array_to_marker_array)
 from std_msgs.msg import Header
+from visualization_msgs.msg import Marker
 
 
 test_header = Header(stamp=Time(sec=100, nanosec=200), frame_id='test')
+deleteall_marker = Marker(action=Marker.DELETEALL)
 
 
 def test_ball_array_to_marker_array_no_balls():
     ball_array = BallArray(header=test_header)
     marker_array = ball_array_to_marker_array(ball_array)
 
-    assert marker_array.markers == []
+    assert len(marker_array.markers) == 1
+    assert marker_array.markers[0] == deleteall_marker
 
 
 def test_ball_array_to_marker_array_multiple_balls():
     ball_array = BallArray(header=test_header, balls=[Ball(), Ball()])
     marker_array = ball_array_to_marker_array(ball_array)
 
-    assert len(marker_array.markers) == 2
-    assert marker_array.markers[0].header == test_header
-
-
-def test_field_boundary_to_marker():
-    field_boundary = FieldBoundary(header=test_header)
-    marker = field_boundary_to_marker(field_boundary)
-
-    assert marker.header == test_header
+    assert len(marker_array.markers) == 3
+    assert marker_array.markers[0] == deleteall_marker
+    assert marker_array.markers[1].header == test_header
 
 
 def test_goalpost_array_to_marker_array_no_posts():
     goalpost_array = GoalpostArray(header=test_header)
     marker_array = goalpost_array_to_marker_array(goalpost_array)
 
-    assert marker_array.markers == []
+    assert len(marker_array.markers) == 1
+    assert marker_array.markers[0] == deleteall_marker
 
 
 def test_goalpost_array_to_marker_array_multiple_posts():
@@ -60,15 +57,17 @@ def test_goalpost_array_to_marker_array_multiple_posts():
                                    Goalpost(), Goalpost()])
     marker_array = goalpost_array_to_marker_array(goalpost_array)
 
-    assert len(marker_array.markers) == 2
-    assert marker_array.markers[0].header == test_header
+    assert len(marker_array.markers) == 3
+    assert marker_array.markers[0] == deleteall_marker
+    assert marker_array.markers[1].header == test_header
 
 
 def test_marking_array_to_marker_array_no_markings():
     marking_array = MarkingArray(header=test_header)
     marker_array = marking_array_to_marker_array(marking_array)
 
-    assert marker_array.markers == []
+    assert len(marker_array.markers) == 1
+    assert marker_array.markers[0] == deleteall_marker
 
 
 def test_marking_array_to_marker_array_multiple_markings():
@@ -79,16 +78,17 @@ def test_marking_array_to_marker_array_multiple_markings():
         segments=[MarkingSegment(), MarkingSegment()])
     marker_array = marking_array_to_marker_array(marking_array)
 
-    assert len(marker_array.markers) == 6
-    assert marker_array.markers[0].header == test_header
-    pass
+    assert len(marker_array.markers) == 7
+    assert marker_array.markers[0] == deleteall_marker
+    assert marker_array.markers[1].header == test_header
 
 
 def test_obstacle_array_to_marker_array_no_obstacles():
     obstacle_array = ObstacleArray(header=test_header)
     marker_array = obstacle_array_to_marker_array(obstacle_array)
 
-    assert marker_array.markers == []
+    assert len(marker_array.markers) == 1
+    assert marker_array.markers[0] == deleteall_marker
 
 
 def test_obstacle_array_to_marker_array_multiple_obstacles():
@@ -97,15 +97,17 @@ def test_obstacle_array_to_marker_array_multiple_obstacles():
         obstacles=[Obstacle(), Obstacle()])
     marker_array = obstacle_array_to_marker_array(obstacle_array)
 
-    assert len(marker_array.markers) == 2
-    assert marker_array.markers[0].header == test_header
+    assert len(marker_array.markers) == 3
+    assert marker_array.markers[0] == deleteall_marker
+    assert marker_array.markers[1].header == test_header
 
 
 def test_robot_array_to_marker_array_no_robots():
     robot_array = RobotArray(header=test_header)
     marker_array = robot_array_to_marker_array(robot_array)
 
-    assert marker_array.markers == []
+    assert len(marker_array.markers) == 1
+    assert marker_array.markers[0] == deleteall_marker
 
 
 def test_robot_array_to_marker_array_multiple_robots():
@@ -113,5 +115,6 @@ def test_robot_array_to_marker_array_multiple_robots():
     marker_array = robot_array_to_marker_array(robot_array)
 
     # (number of markers >= number of robots) because a robot can have more than one Marker
-    assert len(marker_array.markers) >= 2
-    assert marker_array.markers[0].header == test_header
+    assert len(marker_array.markers) >= 3
+    assert marker_array.markers[0] == deleteall_marker
+    assert marker_array.markers[1].header == test_header
