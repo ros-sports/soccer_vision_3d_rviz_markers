@@ -4,6 +4,9 @@
 
 Package that contains libraries to display [soccer_vision_3d_msgs](https://index.ros.org/p/soccer_vision_3d_msgs/) as RViz Markers.
 
+The node simply listens for ball, field boundary, goalposts, markings, obstacles and robots,
+converts them to visualization markers and publishes them so they can be visualized in RViz.
+
 # Installation
 
 Only ROS2 Rolling is currently supported.
@@ -14,8 +17,30 @@ To build from source, source your ROS installation, then run the following in yo
 
 ```sh
 git clone https://github.com/ros-sports/soccer_vision_3d_rviz_markers.git src/soccer_vision_3d_rviz_markers --branch ${ROS_DISTRO}
+rosdep install --from-paths src -i
 colcon build
 ```
+
+# Topics
+
+## Subscriptions
+
+* `/soccer_vision_3d/balls` (`soccer_vision_3d_msgs/BallArray`)
+* `/soccer_vision_3d/field_boundary` (`soccer_vision_3d_msgs/FieldBoundary`)
+* `/soccer_vision_3d/goalposts` (`soccer_vision_3d_msgs/GoalpostArray`)
+* `/soccer_vision_3d/markings` (`soccer_vision_3d_msgs/MarkingArray`)
+* `/soccer_vision_3d/obstacles` (`soccer_vision_3d_msgs/ObstacleArray`)
+* `/soccer_vision_3d/robots` (`soccer_vision_3d_msgs/RobotArray`)
+
+## Publishers
+
+* `/visualization/balls` (`visualization_msgs/msg/MarkerArray`)
+* `/visualization/field_boundary` (`visualization_msgs/msg/Marker`)
+* `/visualization/goalposts` (`visualization_msgs/msg/MarkerArray`)
+* `/visualization/markings` (`visualization_msgs/msg/MarkerArray`)
+* `/visualization/obstacles` (`visualization_msgs/msg/MarkerArray`)
+* `/visualization/robots` (`visualization_msgs/msg/MarkerArray`)
+
 
 
 # Usage
