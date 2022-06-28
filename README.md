@@ -33,7 +33,7 @@ Set up a publisher that publishes a goalpost:
 ```sh
 ros2 topic pub /soccer_vision_3d/goalposts soccer_vision_3d_msgs/msg/GoalpostArray "
 header:
-  frame_id: 'map'
+  frame_id: 'camera'
 posts:
   - bb:
       center:
@@ -59,10 +59,11 @@ posts:
 ```
 
 
-Open RViz2:
+Open RViz2 using a configuration file provided by the package:
 
 ```sh
-rviz2
+rviz2 -d $(ros2 pkg prefix --share soccer_vision_3d_rviz_markers)/rviz/demo.rviz
 ```
 
-Add a MarkerArray, and set the topic to ``/soccer_vision_3d/goalposts``.
+You should see a white goalpost be displayed in RViz!
+
