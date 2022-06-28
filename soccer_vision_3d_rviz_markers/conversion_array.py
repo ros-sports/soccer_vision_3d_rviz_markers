@@ -46,24 +46,24 @@ def goalpost_array_to_marker_array(msg: GoalpostArray) -> MarkerArray:
 def marking_array_to_marker_array(msg: MarkingArray) -> MarkerArray:
     marker_array = MarkerArray()
     marker_array.markers.append(Marker(action=Marker.DELETEALL))
-    id = 0
+    i = 0
     for marking in msg.ellipses:
         marker = marking_ellipse_to_marker(marking)
         marker.header = msg.header
-        marker.id = id
-        id += 1
+        marker.id = i
+        i += 1
         marker_array.markers.append(marker)
     for marking in msg.intersections:
         marker = marking_intersection_to_marker(marking)
         marker.header = msg.header
-        marker.id = id
-        id += 1
+        marker.id = i
+        i += 1
         marker_array.markers.append(marker)
     for marking in msg.segments:
         marker = marking_segment_to_marker(marking)
         marker.header = msg.header
-        marker.id = id
-        id += 1
+        marker.id = i
+        i += 1
         marker_array.markers.append(marker)
     return marker_array
 
@@ -82,12 +82,12 @@ def obstacle_array_to_marker_array(msg: ObstacleArray) -> MarkerArray:
 def robot_array_to_marker_array(msg: RobotArray) -> MarkerArray:
     marker_array = MarkerArray()
     marker_array.markers.append(Marker(action=Marker.DELETEALL))
-    id = 0
+    i = 0
     for robot in msg.robots:
         markers = robot_to_markers(robot)
         for marker in markers:
             marker.header = msg.header
-            marker.id = id
-            id += 1
+            marker.id = i
+            i += 1
             marker_array.markers.append(marker)
     return marker_array
