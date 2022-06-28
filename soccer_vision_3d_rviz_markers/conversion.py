@@ -31,6 +31,11 @@ def ball_to_marker(msg: Ball) -> Marker:
     marker = Marker()
     marker.type = Marker.SPHERE
     marker.pose.position = msg.center
+    # We're just going to use SPL's ball (100mm diameter) for now. Must come up with a way of
+    # dealing with other league's balls.
+    marker.scale.x = 0.10
+    marker.scale.y = 0.10
+    marker.scale.z = 0.10
     marker.color = ColorRGBA(r=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 

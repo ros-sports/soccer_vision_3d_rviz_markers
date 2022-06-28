@@ -47,9 +47,11 @@ def test_ball_to_marker():
     assert marker.pose.position.x == 1.0
     assert marker.pose.position.y == 2.0
     assert marker.pose.position.z == 3.0
-    # assert marker.scale.x == 0.13
-    # assert marker.scale.y == 0.13
-    # assert marker.scale.z == 0.13
+    # We're just going to use SPL's ball (100mm diameter) for now. Must come up with a way of
+    # dealing with other league's balls.
+    assert marker.scale.x == 0.10
+    assert marker.scale.y == 0.10
+    assert marker.scale.z == 0.10
     assert marker.color.r == 1.0
     assert marker.color.g == 0.0
     assert marker.color.b == 0.0
