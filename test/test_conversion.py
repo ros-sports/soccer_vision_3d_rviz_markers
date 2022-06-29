@@ -134,7 +134,10 @@ def test_marking_ellipse_to_marker():
     assert marker.pose.orientation.w == 0.944
     assert marker.scale.x == 0.5  # Should be same as diameter
     assert marker.scale.y == 0.5  # Should be same as diameter
-    assert marker.scale.z == 0.001  # Should be very small, but can't be zero
+    # Set z scale to be very small, but can't be zero because a cylinder needs a height to be
+    # valid. Also, setting this to a lower value makes the cylinder too thin and the marker
+    # starts becoming transparent. 0.005 is a compromise.
+    assert marker.scale.z == 0.005
     assert marker.color.r == 1.0
     assert marker.color.g == 1.0
     assert marker.color.b == 1.0

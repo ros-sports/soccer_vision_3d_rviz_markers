@@ -64,7 +64,10 @@ def marking_ellipse_to_marker(msg: MarkingEllipse) -> Marker:
     marker.pose = msg.center
     marker.scale.x = msg.diameter
     marker.scale.y = msg.diameter
-    marker.scale.z = 0.001  # Should be very small, but can't be zero
+    # Set z scale to be very small, but can't be zero because a cylinder needs a height to be
+    # valid. Also, setting this to a lower value makes the cylinder too thin and the marker
+    # starts becoming transparent. 0.005 is a compromise.
+    marker.scale.z = 0.005
     marker.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
