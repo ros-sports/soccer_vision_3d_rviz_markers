@@ -41,7 +41,10 @@ colcon build
 * `/visualization/obstacles` (`visualization_msgs/msg/MarkerArray`)
 * `/visualization/robots` (`visualization_msgs/msg/MarkerArray`)
 
+## Parameters
 
+* `ball_diameter` (`float`) - Diameter of the ball in meters.
+* `marking_segment_width` (`float`) - Width of a marking segment in meters.
 
 # Usage
 

@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import rclpy
+from rclpy import Parameter
 
 from soccer_vision_3d_msgs.msg import (
-    BallArray, FieldBoundary, GoalpostArray, MarkingArray, ObstacleArray, Robot, RobotArray)
+    Ball, BallArray, FieldBoundary, GoalpostArray, MarkingArray, MarkingSegment, ObstacleArray,
+    Robot, RobotArray)
 from soccer_vision_3d_rviz_markers.visualizer import SoccerVision3DMarkers
 from visualization_msgs.msg import Marker, MarkerArray
 
@@ -27,6 +29,13 @@ class TestVisualizer:
 
     def _callback_msg(self, msg):
         self.received = msg
+
+    def test_parameters_default_values(self):
+        rclpy.init()
+        visualizer_node = SoccerVision3DMarkers()
+        assert visualizer_node.get_parameter('ball_diameter').value == 0.10
+        assert visualizer_node.get_parameter('marking_segment_width').value == 0.05
+        rclpy.shutdown()
 
     def test_topics(self):
 
@@ -189,5 +198,52 @@ class TestVisualizer:
         rclpy.spin_once(test_node, timeout_sec=0.1)
 
         assert self.received is not None
+
+        rclpy.shutdown()
+
+    def test_parameter_ball_diameter_is_being_used(self):
+        rclpy.init()
+        visualizer_node = SoccerVision3DMarkers()
+        visualizer_node.set_parameters([Parameter('ball_diameter', Parameter.Type.DOUBLE, 0.30)])
+        test_node = rclpy.node.Node('test')
+        publisher = test_node.create_publisher(
+            BallArray, 'soccer_vision_3d/balls', 10)
+        subscription = test_node.create_subscription(  # noqa: F841
+            MarkerArray, 'visualization/balls', self._callback_msg, 10)
+
+        ball_array = BallArray()
+        ball_array.balls.append(Ball())
+        publisher.publish(ball_array)
+
+        rclpy.spin_once(visualizer_node, timeout_sec=0.1)
+        rclpy.spin_once(test_node, timeout_sec=0.1)
+
+        # Check the x scale of the marker to see if it is equal to the ball diameter.
+        # markers[0] is the DELETEALL marker, and markers[1] corresponds to the ball.
+        assert self.received.markers[1].scale.x == 0.30
+
+        rclpy.shutdown()
+
+    def test_parameter_marking_segment_width_is_being_used(self):
+        rclpy.init()
+        visualizer_node = SoccerVision3DMarkers()
+        visualizer_node.set_parameters(
+            [Parameter('marking_segment_width', Parameter.Type.DOUBLE, 0.02)])
+        test_node = rclpy.node.Node('test')
+        publisher = test_node.create_publisher(
+            MarkingArray, 'soccer_vision_3d/markings', 10)
+        subscription = test_node.create_subscription(  # noqa: F841
+            MarkerArray, 'visualization/markings', self._callback_msg, 10)
+
+        marking_array = MarkingArray()
+        marking_array.segments.append(MarkingSegment())
+        publisher.publish(marking_array)
+
+        rclpy.spin_once(visualizer_node, timeout_sec=0.1)
+        rclpy.spin_once(test_node, timeout_sec=0.1)
+
+        # Check if the x scale of the marker is equal to the marking segment width.
+        # markers[0] is the DELETEALL marker, and markers[1] corresponds to the segment.
+        assert self.received.markers[1].scale.x == 0.02
 
         rclpy.shutdown()

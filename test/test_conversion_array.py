@@ -29,33 +29,39 @@ deleteall_marker = Marker(action=Marker.DELETEALL)
 
 def test_ball_array_to_marker_array_no_balls():
     ball_array = BallArray()
-    marker_array = ball_array_to_marker_array(ball_array)
+    marker_array = ball_array_to_marker_array(ball_array, diameter=0.0)
     assert len(marker_array.markers) == 1
 
 
 def test_ball_array_to_marker_array_multiple_balls():
     ball_array = BallArray(balls=[Ball(), Ball()])
-    marker_array = ball_array_to_marker_array(ball_array)
+    marker_array = ball_array_to_marker_array(ball_array, diameter=0.0)
     assert len(marker_array.markers) == 3
 
 
 def test_ball_array_to_marker_array_first_marker_is_delete_all():
     ball_array = BallArray()
-    marker_array = ball_array_to_marker_array(ball_array)
+    marker_array = ball_array_to_marker_array(ball_array, diameter=0.0)
     assert marker_array.markers[0] == deleteall_marker
 
 
 def test_ball_array_to_marker_array_header_copied():
     ball_array = BallArray(header=test_header, balls=[Ball()])
-    marker_array = ball_array_to_marker_array(ball_array)
+    marker_array = ball_array_to_marker_array(ball_array, diameter=0.0)
     assert marker_array.markers[1].header == test_header
 
 
 def test_ball_array_to_marker_array_id_assigned():
     ball_array = BallArray(balls=[Ball(), Ball()])
-    marker_array = ball_array_to_marker_array(ball_array)
+    marker_array = ball_array_to_marker_array(ball_array, diameter=0.0)
     assert marker_array.markers[1].id == 0
     assert marker_array.markers[2].id == 1
+
+
+def test_ball_array_to_marker_array_diameter_parameter_used():
+    ball_array = BallArray(header=test_header, balls=[Ball()])
+    marker_array = ball_array_to_marker_array(ball_array, diameter=0.2)
+    assert marker_array.markers[1].scale.x == 0.20
 
 
 def test_goalpost_array_to_marker_array_no_posts():
@@ -91,7 +97,7 @@ def test_goalpost_array_to_marker_array_id_assigned():
 
 def test_marking_array_to_marker_array_no_markings():
     marking_array = MarkingArray()
-    marker_array = marking_array_to_marker_array(marking_array)
+    marker_array = marking_array_to_marker_array(marking_array, segment_width=0.0)
     assert len(marker_array.markers) == 1
 
 
@@ -100,19 +106,19 @@ def test_marking_array_to_marker_array_multiple_markings():
         ellipses=[MarkingEllipse(), MarkingEllipse()],
         intersections=[MarkingIntersection(), MarkingIntersection()],
         segments=[MarkingSegment(), MarkingSegment()])
-    marker_array = marking_array_to_marker_array(marking_array)
+    marker_array = marking_array_to_marker_array(marking_array, segment_width=0.0)
     assert len(marker_array.markers) == 7
 
 
 def test_marking_array_to_marker_array_first_marker_is_delete_all():
     marking_array = MarkingArray()
-    marker_array = marking_array_to_marker_array(marking_array)
+    marker_array = marking_array_to_marker_array(marking_array, segment_width=0.0)
     assert marker_array.markers[0] == deleteall_marker
 
 
 def test_marking_array_to_marker_array_header_copied():
     marking_array = MarkingArray(header=test_header, ellipses=[MarkingEllipse()])
-    marker_array = marking_array_to_marker_array(marking_array)
+    marker_array = marking_array_to_marker_array(marking_array, segment_width=0.0)
     assert marker_array.markers[1].header == test_header
 
 
@@ -120,10 +126,16 @@ def test_marking_array_to_marker_array_id_assigned():
     marking_array = MarkingArray(
         ellipses=[MarkingEllipse()], intersections=[MarkingIntersection()],
         segments=[MarkingSegment()])
-    marker_array = marking_array_to_marker_array(marking_array)
+    marker_array = marking_array_to_marker_array(marking_array, segment_width=0.0)
     assert marker_array.markers[1].id == 0
     assert marker_array.markers[2].id == 1
     assert marker_array.markers[3].id == 2
+
+
+def test_marking_array_to_marker_array_segment_width_parameter_used():
+    marking_array = MarkingArray(header=test_header, segments=[MarkingSegment()])
+    marker_array = marking_array_to_marker_array(marking_array, segment_width=0.03)
+    assert marker_array.markers[1].scale.x == 0.03
 
 
 def test_obstacle_array_to_marker_array_no_obstacles():

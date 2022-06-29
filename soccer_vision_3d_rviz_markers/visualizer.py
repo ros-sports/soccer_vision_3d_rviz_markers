@@ -30,6 +30,10 @@ class SoccerVision3DMarkers(Node):
     def __init__(self):
         super().__init__('SoccerVision3DMarkers')
 
+        # Declare parameters
+        self.declare_parameter('ball_diameter', 0.10)
+        self.declare_parameter('marking_segment_width', 0.05)
+
         # Create publishers
         self.balls_publisher = self.create_publisher(
             MarkerArray, 'visualization/balls', 10)
@@ -59,7 +63,8 @@ class SoccerVision3DMarkers(Node):
             RobotArray, 'soccer_vision_3d/robots', self.robots_cb, 10)
 
     def balls_cb(self, msg: BallArray):
-        self.balls_publisher.publish(ball_array_to_marker_array(msg))
+        self.balls_publisher.publish(ball_array_to_marker_array(
+            msg, diameter=self.get_parameter('ball_diameter').value))
 
     def field_boundary_cb(self, msg: FieldBoundary):
         self.field_boundary_publisher.publish(field_boundary_to_marker(msg))
@@ -68,7 +73,8 @@ class SoccerVision3DMarkers(Node):
         self.goalposts_publisher.publish(goalpost_array_to_marker_array(msg))
 
     def markings_cb(self, msg: MarkingArray):
-        self.markings_publisher.publish(marking_array_to_marker_array(msg))
+        self.markings_publisher.publish(marking_array_to_marker_array(
+            msg, segment_width=self.get_parameter('marking_segment_width').value))
 
     def obstacles_cb(self, msg: ObstacleArray):
         self.obstacles_publisher.publish(obstacle_array_to_marker_array(msg))

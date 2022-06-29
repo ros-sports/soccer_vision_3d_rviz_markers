@@ -40,15 +40,14 @@ def test_ball_to_marker():
     ball.center.y = 2.0
     ball.center.z = 3.0
     ball.confidence.confidence = 0.5
-    marker = ball_to_marker(ball)
+    marker = ball_to_marker(ball, diameter=0.10)
 
     assert marker.type == Marker.SPHERE
     assert marker.action == Marker.MODIFY
     assert marker.pose.position.x == 1.0
     assert marker.pose.position.y == 2.0
     assert marker.pose.position.z == 3.0
-    # We're just going to use SPL's ball (100mm diameter) for now. Must come up with a way of
-    # dealing with other league's balls.
+    # Scale (x, y, z) should be equal to the diameter parameter
     assert marker.scale.x == 0.10
     assert marker.scale.y == 0.10
     assert marker.scale.z == 0.10
@@ -177,7 +176,7 @@ def test_marking_segment_to_marker():
     marking_segment.end.y = 0.5
     marking_segment.end.z = 0.6
     marking_segment.confidence.confidence = 0.7
-    marker = marking_segment_to_marker(marking_segment)
+    marker = marking_segment_to_marker(marking_segment, width=0.05)
 
     assert marker.type == Marker.LINE_STRIP
     assert marker.points[0].x == 0.1
@@ -186,7 +185,7 @@ def test_marking_segment_to_marker():
     assert marker.points[1].x == 0.4
     assert marker.points[1].y == 0.5
     assert marker.points[1].z == 0.6
-    assert marker.scale.x == 0.05  # 0.05m line width
+    assert marker.scale.x == 0.05
     assert marker.color.r == 1.0
     assert marker.color.g == 1.0
     assert marker.color.b == 1.0

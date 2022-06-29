@@ -27,15 +27,13 @@ def conf_to_alpha(conf: Confidence) -> float:
     return conf.confidence
 
 
-def ball_to_marker(msg: Ball) -> Marker:
+def ball_to_marker(msg: Ball, diameter: float) -> Marker:
     marker = Marker()
     marker.type = Marker.SPHERE
     marker.pose.position = msg.center
-    # We're just going to use SPL's ball (100mm diameter) for now. Must come up with a way of
-    # dealing with other league's balls.
-    marker.scale.x = 0.10
-    marker.scale.y = 0.10
-    marker.scale.z = 0.10
+    marker.scale.x = diameter
+    marker.scale.y = diameter
+    marker.scale.z = diameter
     marker.color = ColorRGBA(r=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
@@ -84,11 +82,11 @@ def marking_intersection_to_marker(msg: MarkingIntersection) -> Marker:
     return marker
 
 
-def marking_segment_to_marker(msg: MarkingSegment) -> Marker:
+def marking_segment_to_marker(msg: MarkingSegment, width: float) -> Marker:
     marker = Marker()
     marker.type = Marker.LINE_STRIP
     marker.points = [msg.start, msg.end]
-    marker.scale.x = 0.05
+    marker.scale.x = width
     marker.color = ColorRGBA(
         r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker

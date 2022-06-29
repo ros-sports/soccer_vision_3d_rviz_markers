@@ -21,11 +21,11 @@ from soccer_vision_3d_rviz_markers.conversion import (
 from visualization_msgs.msg import Marker, MarkerArray
 
 
-def ball_array_to_marker_array(msg: BallArray) -> MarkerArray:
+def ball_array_to_marker_array(msg: BallArray, diameter: float) -> MarkerArray:
     marker_array = MarkerArray()
     marker_array.markers.append(Marker(action=Marker.DELETEALL))
     for i, ball in enumerate(msg.balls):
-        marker = ball_to_marker(ball)
+        marker = ball_to_marker(ball, diameter)
         marker.header = msg.header
         marker.id = i
         marker_array.markers.append(marker)
@@ -43,7 +43,7 @@ def goalpost_array_to_marker_array(msg: GoalpostArray) -> MarkerArray:
     return marker_array
 
 
-def marking_array_to_marker_array(msg: MarkingArray) -> MarkerArray:
+def marking_array_to_marker_array(msg: MarkingArray, segment_width: float) -> MarkerArray:
     marker_array = MarkerArray()
     marker_array.markers.append(Marker(action=Marker.DELETEALL))
     i = 0
@@ -60,7 +60,7 @@ def marking_array_to_marker_array(msg: MarkingArray) -> MarkerArray:
         i += 1
         marker_array.markers.append(marker)
     for marking in msg.segments:
-        marker = marking_segment_to_marker(marking)
+        marker = marking_segment_to_marker(marking, width=segment_width)
         marker.header = msg.header
         marker.id = i
         i += 1
