@@ -62,6 +62,19 @@ Visualization Manager:
             Reliability Policy: Reliable
             Value: /visualization/balls
           Value: true
+        - Class: rviz_default_plugins/Marker
+          Enabled: true
+          Name: FieldBoundary
+          Namespaces:
+            "": true
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            Filter size: 10
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /visualization/field_boundary
+          Value: true
         - Class: rviz_default_plugins/MarkerArray
           Enabled: true
           Name: Goalposts
