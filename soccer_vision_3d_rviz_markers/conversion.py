@@ -54,8 +54,7 @@ def goalpost_to_marker(msg: Goalpost) -> Marker:
     marker.type = Marker.CYLINDER
     marker.pose = msg.bb.center
     marker.scale = msg.bb.size
-    marker.color = ColorRGBA(
-        r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
+    marker.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
 
@@ -65,7 +64,8 @@ def marking_ellipse_to_marker(msg: MarkingEllipse) -> Marker:
     marker.pose = msg.center
     marker.scale.x = msg.diameter
     marker.scale.y = msg.diameter
-    marker.color = ColorRGBA(g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
+    marker.scale.z = 0.001  # Should be very small, but can't be zero
+    marker.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
 
@@ -75,8 +75,7 @@ def marking_intersection_to_marker(msg: MarkingIntersection) -> Marker:
     marker.pose.position = msg.center
     for ray in msg.rays:
         marker.points.append(Point())
-        marker.points.append(
-            Point(x=ray.x * 0.1, y=ray.y * 0.1, z=ray.z * 0.1))
+        marker.points.append(Point(x=ray.x * 0.1, y=ray.y * 0.1, z=ray.z * 0.1))
     marker.scale.x = 0.01
     marker.color = ColorRGBA(r=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
@@ -87,8 +86,7 @@ def marking_segment_to_marker(msg: MarkingSegment, width: float) -> Marker:
     marker.type = Marker.LINE_STRIP
     marker.points = [msg.start, msg.end]
     marker.scale.x = width
-    marker.color = ColorRGBA(
-        r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
+    marker.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
 
@@ -97,8 +95,7 @@ def obstacle_to_marker(msg: Obstacle) -> Marker:
     marker.type = Marker.CUBE
     marker.pose = msg.bb.center
     marker.scale = msg.bb.size
-    marker.color = ColorRGBA(
-        r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
+    marker.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 
 

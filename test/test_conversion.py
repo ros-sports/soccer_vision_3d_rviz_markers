@@ -134,8 +134,8 @@ def test_marking_ellipse_to_marker():
     assert marker.pose.orientation.w == 0.944
     assert marker.scale.x == 0.5  # Should be same as diameter
     assert marker.scale.y == 0.5  # Should be same as diameter
-    assert marker.scale.z == 0.0
-    assert marker.color.r == 0.0
+    assert marker.scale.z == 0.001  # Should be very small, but can't be zero
+    assert marker.color.r == 1.0
     assert marker.color.g == 1.0
     assert marker.color.b == 1.0
     assert marker.color.a == 0.7
