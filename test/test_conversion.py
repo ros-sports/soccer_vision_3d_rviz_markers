@@ -272,10 +272,12 @@ def test_robot_to_markers():
     assert markers[1].pose.orientation.y == 0.145
     assert markers[1].pose.orientation.z == 0.269
     assert markers[1].pose.orientation.w == 0.944
+    assert markers[1].scale.z == 0.2  # Font size
     assert markers[1].color.r == 1.0
     assert markers[1].color.g == 0.0
     assert markers[1].color.b == 0.0
     assert markers[1].color.a == 0.7
+    assert markers[1].text == '1'  # Player number
 
 
 def test_own_team_robot_to_markers():

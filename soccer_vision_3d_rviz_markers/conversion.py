@@ -128,7 +128,9 @@ def robot_to_markers(msg: Robot) -> list[Marker]:
     marker_text.pose.position.y = msg.bb.center.position.y
     marker_text.pose.position.z = msg.bb.center.position.z + msg.bb.size.z / 2 + 0.1
     marker_text.pose.orientation = msg.bb.center.orientation
+    marker_text.scale.z = 0.2  # Default Font Size
     marker_text.color = color
+    marker_text.text = str(msg.attributes.player_number)
     markers.append(marker_text)
 
     return markers
