@@ -79,7 +79,7 @@ def marking_intersection_to_marker(msg: MarkingIntersection) -> Marker:
     for ray in msg.rays:
         marker.points.append(Point())
         marker.points.append(Point(x=ray.x * 0.1, y=ray.y * 0.1, z=ray.z * 0.1))
-    marker.scale.x = 0.01
+    marker.scale.x = 0.02  # 0.02m line width
     marker.color = ColorRGBA(r=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 

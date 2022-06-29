@@ -163,7 +163,7 @@ def test_marking_intersection_to_marker():
     # 0.1m length vector in direction of 2nd ray
     assert Point(y=0.1) in marker.points
     assert marker.points.count(Point()) == 2  # center
-    assert marker.scale.x == 0.01  # 0.01m line width
+    assert marker.scale.x == 0.02  # 0.02m line width
     assert marker.color.r == 1.0
     assert marker.color.g == 0.0
     assert marker.color.b == 1.0
