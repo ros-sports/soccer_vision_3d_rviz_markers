@@ -33,6 +33,7 @@ class SoccerVision3DMarkers(Node):
         # Declare parameters
         self.declare_parameter('ball_diameter', 0.10)
         self.declare_parameter('marking_segment_width', 0.05)
+        self.declare_parameter('field_boundary_line_width', 0.02)
 
         # Create publishers
         self.balls_publisher = self.create_publisher(
@@ -67,7 +68,8 @@ class SoccerVision3DMarkers(Node):
             msg, diameter=self.get_parameter('ball_diameter').value))
 
     def field_boundary_cb(self, msg: FieldBoundary):
-        self.field_boundary_publisher.publish(field_boundary_to_marker(msg))
+        self.field_boundary_publisher.publish(field_boundary_to_marker(
+            msg, width=self.get_parameter('field_boundary_line_width').value))
 
     def goalposts_cb(self, msg: GoalpostArray):
         self.goalposts_publisher.publish(goalpost_array_to_marker_array(msg))

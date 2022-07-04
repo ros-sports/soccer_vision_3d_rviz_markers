@@ -38,13 +38,13 @@ def ball_to_marker(msg: Ball, diameter: float) -> Marker:
     return marker
 
 
-def field_boundary_to_marker(msg: FieldBoundary) -> Marker:
+def field_boundary_to_marker(msg: FieldBoundary, width: float) -> Marker:
     marker = Marker()
     # FieldBoundary has a header field because it's not part of an array. So, copy the header.
     marker.header = msg.header
     marker.type = Marker.LINE_STRIP
     marker.points = msg.points
-    marker.scale.x = 0.02
+    marker.scale.x = width
     marker.color = ColorRGBA(g=1.0, a=conf_to_alpha(msg.confidence))
     return marker
 

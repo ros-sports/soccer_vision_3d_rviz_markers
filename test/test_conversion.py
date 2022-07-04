@@ -57,12 +57,12 @@ def test_ball_to_marker():
     assert marker.color.a == 0.5
 
 
-def test_fieldboundary_to_marker():
+def test_field_boundary_to_marker():
     field_boundary = FieldBoundary()
     field_boundary.points = [
         Point(x=0.1, y=0.2, z=0.3), Point(x=0.4, y=0.5, z=0.6)]
     field_boundary.confidence.confidence = 0.6
-    marker = field_boundary_to_marker(field_boundary)
+    marker = field_boundary_to_marker(field_boundary, width=0.15)
 
     assert marker.type == Marker.LINE_STRIP
     assert marker.action == Marker.MODIFY
@@ -72,7 +72,7 @@ def test_fieldboundary_to_marker():
     assert marker.points[1].x == 0.4
     assert marker.points[1].y == 0.5
     assert marker.points[1].z == 0.6
-    assert marker.scale.x == 0.02
+    assert marker.scale.x == 0.15
     assert marker.color.r == 0.0
     assert marker.color.g == 1.0
     assert marker.color.b == 0.0

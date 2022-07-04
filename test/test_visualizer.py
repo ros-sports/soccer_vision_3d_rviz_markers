@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from geometry_msgs.msg import Point
 import rclpy
 from rclpy import Parameter
 
@@ -35,6 +36,7 @@ class TestVisualizer:
         visualizer_node = SoccerVision3DMarkers()
         assert visualizer_node.get_parameter('ball_diameter').value == 0.10
         assert visualizer_node.get_parameter('marking_segment_width').value == 0.05
+        assert visualizer_node.get_parameter('field_boundary_line_width').value == 0.02
         rclpy.shutdown()
 
     def test_topics(self):
@@ -245,5 +247,28 @@ class TestVisualizer:
         # Check if the x scale of the marker is equal to the marking segment width.
         # markers[0] is the DELETEALL marker, and markers[1] corresponds to the segment.
         assert self.received.markers[1].scale.x == 0.02
+
+        rclpy.shutdown()
+
+    def test_parameter_field_boundary_line_width_is_being_used(self):
+        rclpy.init()
+        visualizer_node = SoccerVision3DMarkers()
+        visualizer_node.set_parameters(
+            [Parameter('field_boundary_line_width', Parameter.Type.DOUBLE, 0.05)])
+        test_node = rclpy.node.Node('test')
+        publisher = test_node.create_publisher(
+            FieldBoundary, 'soccer_vision_3d/field_boundary', 10)
+        subscription = test_node.create_subscription(  # noqa: F841
+            Marker, 'visualization/field_boundary', self._callback_msg, 10)
+
+        field_boundary = FieldBoundary()
+        field_boundary.points.append(Point(x=0.0))
+        field_boundary.points.append(Point(x=1.0))
+        publisher.publish(field_boundary)
+
+        rclpy.spin_once(visualizer_node, timeout_sec=0.1)
+        rclpy.spin_once(test_node, timeout_sec=0.1)
+
+        assert self.received.scale.x == 0.05
 
         rclpy.shutdown()
