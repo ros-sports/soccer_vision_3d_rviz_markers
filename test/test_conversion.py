@@ -221,9 +221,9 @@ def test_obstacle_to_marker():
     assert marker.scale.x == 0.4
     assert marker.scale.y == 0.5
     assert marker.scale.z == 0.6
-    assert marker.color.r == 1.0
-    assert marker.color.g == 1.0
-    assert marker.color.b == 1.0
+    assert marker.color.r == 0.0
+    assert marker.color.g == 0.0
+    assert marker.color.b == 0.0
     assert marker.color.a == 0.7
 
 
@@ -241,7 +241,7 @@ def test_robot_to_markers():
     robot.bb.size.z = 0.6
     robot.confidence.confidence = 0.7
     robot.attributes.player_number = 1
-    robot.attributes.team = robot.attributes.TEAM_OPPONENT
+    robot.attributes.team = robot.attributes.TEAM_UNKNOWN
     robot.attributes.state = robot.attributes.STATE_KICKING
     robot.attributes.facing = robot.attributes.FACING_LEFT
     markers = robot_to_markers(robot)
@@ -260,8 +260,8 @@ def test_robot_to_markers():
     assert markers[0].scale.y == 0.5
     assert markers[0].scale.z == 0.6
     assert markers[0].color.r == 1.0
-    assert markers[0].color.g == 0.0
-    assert markers[0].color.b == 0.0
+    assert markers[0].color.g == 1.0
+    assert markers[0].color.b == 1.0
     assert markers[0].color.a == 0.7
 
     assert markers[1].type == Marker.TEXT_VIEW_FACING
@@ -274,8 +274,8 @@ def test_robot_to_markers():
     assert markers[1].pose.orientation.w == 0.944
     assert markers[1].scale.z == 0.2  # Font size
     assert markers[1].color.r == 1.0
-    assert markers[1].color.g == 0.0
-    assert markers[1].color.b == 0.0
+    assert markers[1].color.g == 1.0
+    assert markers[1].color.b == 1.0
     assert markers[1].color.a == 0.7
     assert markers[1].text == '1'  # Player number
 
@@ -283,6 +283,7 @@ def test_robot_to_markers():
 def test_own_team_robot_to_markers():
     robot = Robot()
     robot.attributes.team = robot.attributes.TEAM_OWN
+    robot.attributes.player_number = 1
     markers = robot_to_markers(robot)
 
     assert len(markers) == 2
@@ -290,7 +291,22 @@ def test_own_team_robot_to_markers():
     assert markers[0].color.r == 0.0
     assert markers[0].color.g == 1.0
     assert markers[0].color.b == 0.0
-
     assert markers[1].color.r == 0.0
     assert markers[1].color.g == 1.0
+    assert markers[1].color.b == 0.0
+
+
+def test_opponent_team_robot_to_markers():
+    robot = Robot()
+    robot.attributes.team = robot.attributes.TEAM_OPPONENT
+    robot.attributes.player_number = 1
+    markers = robot_to_markers(robot)
+
+    assert len(markers) == 2
+
+    assert markers[0].color.r == 1.0
+    assert markers[0].color.g == 0.0
+    assert markers[0].color.b == 0.0
+    assert markers[1].color.r == 1.0
+    assert markers[1].color.g == 0.0
     assert markers[1].color.b == 0.0
