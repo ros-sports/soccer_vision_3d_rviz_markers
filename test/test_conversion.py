@@ -221,9 +221,9 @@ def test_obstacle_to_marker():
     assert marker.scale.x == 0.4
     assert marker.scale.y == 0.5
     assert marker.scale.z == 0.6
-    assert marker.color.r == 1.0
-    assert marker.color.g == 1.0
-    assert marker.color.b == 1.0
+    assert marker.color.r == 0.0
+    assert marker.color.g == 0.0
+    assert marker.color.b == 0.0
     assert marker.color.a == 0.7
 
 

@@ -98,7 +98,7 @@ def obstacle_to_marker(msg: Obstacle) -> Marker:
     marker.type = Marker.CUBE
     marker.pose = msg.bb.center
     marker.scale = msg.bb.size
-    marker.color = ColorRGBA(r=1.0, g=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
+    marker.color = ColorRGBA(r=0.0, g=0.0, b=0.0, a=conf_to_alpha(msg.confidence))
     return marker
 
 
