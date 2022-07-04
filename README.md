@@ -4,6 +4,6 @@
 
 Package that contains libraries to display [soccer_vision_3d_msgs](https://index.ros.org/p/soccer_vision_3d_msgs/) as RViz Markers.
 
-This package is only available currently for ROS2 Rolling.
+This package is currently only available for ROS2 Rolling.
 
 For more information, see our [Documentation](https://soccer-vision-3d-rviz-markers.readthedocs.io/)
