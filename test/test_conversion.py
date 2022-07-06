@@ -42,7 +42,7 @@ def test_ball_to_marker():
     ball.confidence.confidence = 0.5
     marker = ball_to_marker(ball, diameter=0.10)
 
-    assert marker.type == Marker.SPHERE
+    assert marker.type == Marker.MESH_RESOURCE
     assert marker.action == Marker.MODIFY
     assert marker.pose.position.x == 1.0
     assert marker.pose.position.y == 2.0
@@ -51,10 +51,12 @@ def test_ball_to_marker():
     assert marker.scale.x == 0.10
     assert marker.scale.y == 0.10
     assert marker.scale.z == 0.10
-    assert marker.color.r == 1.0
+    assert marker.color.r == 0.0
     assert marker.color.g == 0.0
     assert marker.color.b == 0.0
     assert marker.color.a == 0.5
+    assert marker.mesh_resource == 'package://soccer_vision_3d_rviz_markers/blender/ball.dae'
+    assert marker.mesh_use_embedded_materials is True
 
 
 def test_field_boundary_to_marker():

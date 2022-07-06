@@ -29,12 +29,14 @@ def conf_to_alpha(conf: Confidence) -> float:
 
 def ball_to_marker(msg: Ball, diameter: float) -> Marker:
     marker = Marker()
-    marker.type = Marker.SPHERE
+    marker.type = Marker.MESH_RESOURCE
     marker.pose.position = msg.center
     marker.scale.x = diameter
     marker.scale.y = diameter
     marker.scale.z = diameter
-    marker.color = ColorRGBA(r=1.0, a=conf_to_alpha(msg.confidence))
+    marker.color = ColorRGBA(a=conf_to_alpha(msg.confidence))
+    marker.mesh_resource = 'package://soccer_vision_3d_rviz_markers/blender/ball.dae'
+    marker.mesh_use_embedded_materials = True
     return marker
 
 
