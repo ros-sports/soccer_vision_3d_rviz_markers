@@ -2,8 +2,8 @@
 Changelog for package soccer_vision_3d_rviz_markers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.1 (2022-07-08)
+------------------
 * Use a black and white ball mesh, so it looks better than a red sphere
 * Simplify README by making it point to RTD.
 * Add Ball, FieldBoundary, Goalpost, Marking, Obstacle, Robot conversions

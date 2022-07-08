@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>soccer_vision_3d_rviz_markers</name>
-  <version>0.0.0</version>
+  <version>0.0.1</version>
   <description>Package that converts soccer_vision_3d_msgs to RViz markers</description>
   <maintainer email="kenjibrameld@gmail.com">ijnek</maintainer>
   <license>Apache License 2.0</license>
