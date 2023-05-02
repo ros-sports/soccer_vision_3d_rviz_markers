@@ -104,7 +104,7 @@ def obstacle_to_marker(msg: Obstacle) -> Marker:
     return marker
 
 
-def robot_to_markers(msg: Robot) -> list[Marker]:
+def robot_to_markers(msg: Robot) -> Marker:
     markers = []
 
     color = ColorRGBA(r=0.0, g=0.0, b=0.0, a=conf_to_alpha(msg.confidence))
