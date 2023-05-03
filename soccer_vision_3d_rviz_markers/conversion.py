@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import List
 from geometry_msgs.msg import Point
 from soccer_vision_3d_msgs.msg import (
     Ball, FieldBoundary, Goalpost, MarkingEllipse, MarkingIntersection, MarkingSegment, Obstacle,
@@ -104,7 +105,7 @@ def obstacle_to_marker(msg: Obstacle) -> Marker:
     return marker
 
 
-def robot_to_markers(msg: Robot) -> Marker:
+def robot_to_markers(msg: Robot) -> List[Marker]:
     markers = []
 
     color = ColorRGBA(r=0.0, g=0.0, b=0.0, a=conf_to_alpha(msg.confidence))
