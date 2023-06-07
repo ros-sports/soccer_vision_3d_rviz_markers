@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from typing import List
+
 from geometry_msgs.msg import Point
 from soccer_vision_3d_msgs.msg import (
     Ball, FieldBoundary, Goalpost, MarkingEllipse, MarkingIntersection, MarkingSegment, Obstacle,
