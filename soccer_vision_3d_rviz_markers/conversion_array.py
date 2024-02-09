@@ -27,7 +27,7 @@ def ball_array_to_marker_array(msg: BallArray, diameter: float) -> MarkerArray:
     for i, ball in enumerate(msg.balls):
         marker = ball_to_marker(ball, diameter)
         marker.header = msg.header
-        marker.id = i
+        marker.id = i + 1
         marker_array.markers.append(marker)
     return marker_array
 
@@ -38,7 +38,7 @@ def goalpost_array_to_marker_array(msg: GoalpostArray) -> MarkerArray:
     for i, goalpost in enumerate(msg.posts):
         marker = goalpost_to_marker(goalpost)
         marker.header = msg.header
-        marker.id = i
+        marker.id = i + 1
         marker_array.markers.append(marker)
     return marker_array
 
@@ -46,7 +46,7 @@ def goalpost_array_to_marker_array(msg: GoalpostArray) -> MarkerArray:
 def marking_array_to_marker_array(msg: MarkingArray, segment_width: float) -> MarkerArray:
     marker_array = MarkerArray()
     marker_array.markers.append(Marker(action=Marker.DELETEALL))
-    i = 0
+    i = 1
     for marking in msg.ellipses:
         marker = marking_ellipse_to_marker(marking)
         marker.header = msg.header
@@ -74,7 +74,7 @@ def obstacle_array_to_marker_array(msg: ObstacleArray) -> MarkerArray:
     for i, obstacle in enumerate(msg.obstacles):
         marker = obstacle_to_marker(obstacle)
         marker.header = msg.header
-        marker.id = i
+        marker.id = i + 1
         marker_array.markers.append(marker)
     return marker_array
 
@@ -82,7 +82,7 @@ def obstacle_array_to_marker_array(msg: ObstacleArray) -> MarkerArray:
 def robot_array_to_marker_array(msg: RobotArray) -> MarkerArray:
     marker_array = MarkerArray()
     marker_array.markers.append(Marker(action=Marker.DELETEALL))
-    i = 0
+    i = 1
     for robot in msg.robots:
         markers = robot_to_markers(robot)
         for marker in markers:

@@ -54,8 +54,8 @@ def test_ball_array_to_marker_array_header_copied():
 def test_ball_array_to_marker_array_id_assigned():
     ball_array = BallArray(balls=[Ball(), Ball()])
     marker_array = ball_array_to_marker_array(ball_array, diameter=0.0)
-    assert marker_array.markers[1].id == 0
-    assert marker_array.markers[2].id == 1
+    assert marker_array.markers[1].id == 1
+    assert marker_array.markers[2].id == 2
 
 
 def test_ball_array_to_marker_array_diameter_parameter_used():
@@ -91,8 +91,8 @@ def test_goalpost_array_to_marker_array_header_copied():
 def test_goalpost_array_to_marker_array_id_assigned():
     goalpost_array = GoalpostArray(posts=[Goalpost(), Goalpost()])
     marker_array = goalpost_array_to_marker_array(goalpost_array)
-    assert marker_array.markers[1].id == 0
-    assert marker_array.markers[2].id == 1
+    assert marker_array.markers[1].id == 1
+    assert marker_array.markers[2].id == 2
 
 
 def test_marking_array_to_marker_array_no_markings():
@@ -127,9 +127,9 @@ def test_marking_array_to_marker_array_id_assigned():
         ellipses=[MarkingEllipse()], intersections=[MarkingIntersection()],
         segments=[MarkingSegment()])
     marker_array = marking_array_to_marker_array(marking_array, segment_width=0.0)
-    assert marker_array.markers[1].id == 0
-    assert marker_array.markers[2].id == 1
-    assert marker_array.markers[3].id == 2
+    assert marker_array.markers[1].id == 1
+    assert marker_array.markers[2].id == 2
+    assert marker_array.markers[3].id == 3
 
 
 def test_marking_array_to_marker_array_segment_width_parameter_used():
@@ -165,8 +165,8 @@ def test_obstacle_array_to_marker_array_header_copied():
 def test_obstacle_array_to_marker_array_id_assigned():
     obstacle_array = ObstacleArray(obstacles=[Obstacle(), Obstacle()])
     marker_array = obstacle_array_to_marker_array(obstacle_array)
-    assert marker_array.markers[1].id == 0
-    assert marker_array.markers[2].id == 1
+    assert marker_array.markers[1].id == 1
+    assert marker_array.markers[2].id == 2
 
 
 def test_robot_array_to_marker_array_no_robots():
@@ -197,5 +197,5 @@ def test_robot_array_to_marker_array_header_copied():
 def test_robot_array_to_marker_array_id_assigned():
     robot_array = RobotArray(robots=[Robot(), Robot()])
     marker_array = robot_array_to_marker_array(robot_array)
-    assert marker_array.markers[1].id == 0
-    assert marker_array.markers[2].id == 1
+    assert marker_array.markers[1].id == 1
+    assert marker_array.markers[2].id == 2
