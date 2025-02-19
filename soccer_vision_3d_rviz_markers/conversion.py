@@ -78,13 +78,32 @@ def marking_ellipse_to_marker(msg: MarkingEllipse) -> Marker:
 
 def marking_intersection_to_marker(msg: MarkingIntersection) -> Marker:
     marker = Marker()
-    marker.type = Marker.LINE_LIST
     marker.pose.position = msg.center
-    for ray in msg.rays:
-        marker.points.append(Point())
-        marker.points.append(Point(x=ray.x * 0.1, y=ray.y * 0.1, z=ray.z * 0.1))
-    marker.scale.x = 0.02  # 0.02m line width
-    marker.color = ColorRGBA(r=1.0, b=1.0, a=conf_to_alpha(msg.confidence))
+    
+    # Set marker color
+    if msg.num_rays == 2:
+        marker.color = ColorRGBA(b=1.0, a=conf_to_alpha(msg.confidence))
+    elif msg.num_rays == 3:
+        marker.color = ColorRGBA(r=1.0, g=1.0, a=conf_to_alpha(msg.confidence))
+    elif msg.num_rays == 4:
+        marker.color = ColorRGBA(r=1.0, a=conf_to_alpha(msg.confidence))
+    else:
+        marker.color = ColorRGBA(a=conf_to_alpha(msg.confidence))
+        
+    if msg.rays:
+        marker.type = Marker.LINE_LIST
+        marker.scale.x = 0.05  # 0.05m line width
+        for ray in msg.rays:
+            marker.points.append(Point())
+            marker.points.append(Point(x=ray.x, y=ray.y, z=ray.z))
+    else:
+        # If there are no rays, then just draw a sphere at the intersection.
+        # - Blue sphere for corner
+        # - Yellow sphere for T-junction
+        # - Red sphere for X-junction
+        # - Black sphere if we have num_rays that we can't handle
+        marker.type = Marker.SPHERE
+        marker.scale.x = marker.scale.y = marker.scale.z = 0.1
     return marker
 
 
